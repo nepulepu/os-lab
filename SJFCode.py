@@ -23,20 +23,26 @@ def print_times(job_list):
 
 
 def swap(job_list, i, j):
+    
     for idx in range(0, 6):
         job_list[idx][i], job_list[idx][j] = job_list[idx][j], job_list[idx][i]
         print("Swap",job_list[idx][i],"with",job_list[idx][j])
 
 
-def sort_arrival_times(job_list):
+def sort_times(job_list):
     for i in range(len(job_list[0])):
-        for j in range(len(job_list[0])):
-            if i == j:
-                continue
-            elif job_list[2][i] < job_list[2][j]:
+        for j in range(i):
+            if job_list[1][i] < job_list[1][j]:
                 swap(job_list, i, j)
-    print("Ordered According to Arrival Times")
+    print("Ordered According to Burst Times")            
     print_times(job_list)
+    for i in range(len(job_list[0])):
+        for j in range(i):
+            if job_list[2][i] < job_list[2][j]:
+                swap(job_list, i, j)
+    print("Ordered According to Arrival Times")            
+    print_times(job_list)
+    
 
 
 def calculate_times(job_list):
@@ -73,19 +79,19 @@ def calculate_times(job_list):
 
 
 def shortest_job_first(job_list):
-    sort_arrival_times(job_list)
+    sort_times(job_list)
     calculate_times(job_list)
 
 
 
-job_number = 5
+job_number = 4
 job_list = [[0 for j in range(job_number)] #Create array of [[],[],[],[]]
             for i in range(6)]                 
 job_list[0] = [i for i in range(1, job_number + 1)] #job number
 
-job_list[1] = [6, 2, 8, 3, 4] #Burst time
+job_list[1] = [9, 5, 3, 5] #Burst time
 
-job_list[2] = [2, 5, 1, 0, 4] #Arrival time
+job_list[2] = [2,2,0,6] #Arrival time
 print("Original Input")
 print_times(job_list)
 

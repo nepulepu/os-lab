@@ -1,5 +1,26 @@
-from queue import Queue
+'''
+Round Robin
+Your program receives as input the number of jobs waiting in queue
+and the time required to execute each job. 
+Display the outcome of each scheduling algorithm.
+INDEXES
+0 - Job number
+1 - Burst time
+2 - Arrival time
+3 - Completion Time
+4 - Waiting time = Turnaround time - Burst time
+5 - Turnaround time = Completion time - Arrival time 
+'''
 
+from queue import Queue
+def print_times(job_list):
+    print("JN      BT      AT      CT      WT      TAT")
+    for i in range(len(job_list[0])):
+        for j in range(0, 6):
+            print(job_list[j][i], end="\t")
+        print()
+    print()
+import webbrowser
 
 def swap(job_list, i, j):
     for idx in range(0, 6):
@@ -8,11 +29,13 @@ def swap(job_list, i, j):
 
 def sort_arrival_times(job_list):
     for i in range(len(job_list[0])):
-        for j in range(i):
-            if job_list[2][i] < job_list[2][j] :
-                print("swap",job_list[2][i],"with",job_list[2][j])
+        for j in range(len(job_list[0])):
+            if i == j:
+                continue
+            elif job_list[2][i] < job_list[2][j]:
                 swap(job_list, i, j)
-    print("sorted list")            
+    print("sorted list")
+    webbrowser.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", new=2)            
     print_time()            
 
 def print_time():
@@ -26,7 +49,7 @@ def print_time():
 def round_robin():
     burst_time = array[1].copy()
     not_yet_queue = array[0].copy()
-    time_quantum = 4  # Suppose its 3 unit
+    time_quantum = 3  # Suppose its 3 unit
     t = 0
     q = Queue()
 
@@ -34,10 +57,10 @@ def round_robin():
         print()
         for i in range(job_number):
             # Check arrival time
-            if (t+time_quantum >= array[2][i] and array[0][i] in not_yet_queue):
+            if (t+time_quantum >= array[2][i] and i+1 in not_yet_queue):
                 print("put job", array[0][i], "into the queue")
                 q.put(i)
-                not_yet_queue.remove(array[0][i])
+                not_yet_queue.remove(i+1)
         print()        
         index = q.get()
         jobnum= array[0][index]
@@ -56,7 +79,7 @@ def round_robin():
                 print()
                 check=False
             elif t>=array[2][index] and burst_time[index]<=time_quantum:
-                print("Job",jobnum,"has burst time",burst_time[index],"is smaller or equal to", time_quantum)
+                print("Job",jobnum,"has burst time",burst_time[index],"smaller or equal to", time_quantum)
                 t += burst_time[index]
                 print("now time is at",t)
                 burst_time[index] = 0
@@ -66,19 +89,19 @@ def round_robin():
                 print("job",jobnum,"have turnaround time",array[5][index])
                 array[4][index] = array[5][index] - array[1][index]  # Waiting time
                 print("job",jobnum,"have waiting time",array[4][index])
-                print("job",array[0][index],"| CT :", array[3][index],"TAT :",array[5][index],"WT :",array[4][index])
                 check=False
             else:
                 t+=1
 
 
+
 # job_number = int(input("Enter number of jobs: "))
-job_number=4
+job_number=5
 array = [[0 for j in range(job_number)]
          for i in range(6)]  # Initialize 2D Array
 array[0] = [number for number in range(1, job_number+1)]
-array[1] = [9, 5, 3, 5] #burst time
-array[2] = [0, 2, 2, 3] #arrival time 
+array[1] = [6, 2, 8, 3, 4]
+array[2] = [2, 5, 1, 0, 4]
 
 # array[1] = [int(time) for time in input("Enter burst time: ").split()]
 # array[2] = [int(time) for time in input("Enter arrival time: ").split()]
@@ -90,3 +113,4 @@ print("Final Result: ")
 print_time()
 print("Average waiting time = ", (sum(array[4])/job_number), end="s\n")
 print("Average turnaround time = ", (sum(array[5])/job_number), end="s\n")
+
