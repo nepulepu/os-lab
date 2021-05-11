@@ -1,8 +1,9 @@
 def insert(file,files):
     if (file[2]<0 or file[1]<0):
         print()
-        print(file[0]+" size cannot be negative")
+        print("file"+file[0]+" size or allocation cannot be negative")
         print()
+        return
 
     check=files[file[1]:file[1]+file[2]]
     check2=[None for i in range(len(check))]
@@ -26,13 +27,15 @@ print()
 print("before:")
 print(files)
 print()
-file1 = ["cat",0,2]
-file2 = ["book",45,5]
-file3 = ["car", 5,15]
+file1 = ["cat",0,5]
+file2 = ["book",45,6]
+file3 = ["car", 5,-15]
+file4 = ["meow",0,5]
 
 insert(file1,files)
 insert(file2,files)
 insert(file3,files)
+insert(file4,files)
 
 print("after:")
 print(files)
